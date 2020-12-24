@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <link rel="stylesheet" href="layui/css/layui.css"  media="all">
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+    </head>
+    <body>
+    <div id="addDiv" style="display:none;padding-right: 30px;">
+        <form class="layui-form" lay-filter="formTest" id="addOrUpForm">
+            <div class="layui-form-item" style="margin-top: 20px;">
+                <label class="layui-form-label">id</label>
+                <div class="layui-input-block">
+                    <input type="text" name="empno" placeholder="请输入商品id" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" style="margin-top: 20px;">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="empname" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">工作</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="job" required lay-verify="required" placeholder="请输入工作" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">管理</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="manager" required lay-verify="required" placeholder="请输入管理" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">入职时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="hiredate" required lay-verify="required" placeholder="请输入入职时间" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">薪水</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="salary" required lay-verify="required" placeholder="请输入薪水" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">佣金</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="commision" required lay-verify="required" placeholder="请输入佣金" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">部门编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="deptno" required lay-verify="required" placeholder="请输入部门编号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+
+    <script type="text/html" id="toolbarDemo">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="getCheckData">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs"  lay-event="del">删除</a>
+    </script>
+
+
+    <script src="layui/layui.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+    <script>
+        layui.use(['table','form'], function(){
+            var table = layui.table;
+            var form=layui.form;
+            var method="";
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                var json=JSON.stringify(data.field);
+
+                alert(method);
+                $.ajax({
+                    type: "POST",
+                    url: method,
+                    data:"json="+json,
+                    success: function(msg) {
+                        layer.closeAll();
+                        table.reload('test');
+                    }
+                    });
+                return false;
+            });
+            //执行一个 table 实例
+            table.render({
+                elem: '#test'
+                ,height: 520
+                ,url: 'selectlimit' //数据接口
+                ,title: '用户表'
+                ,page: true //开启分页
+                ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                ,cols: [[ //表头
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field: 'empno', title: '员工ID',fixed: 'left', width: 100, sort: true, totalRow: true}
+                    ,{field: 'empname', title: '用户名', width: 100, sort: true, totalRow: true}
+                    ,{field: 'job', title: '工作', width: 100, sort: true, totalRow: true}
+                    ,{field: 'manager', title: '管理', width: 100, sort: true}
+                    ,{field: 'hiredate', title: '入职时间', width: 100, sort: true, totalRow: true}
+                    ,{field: 'salary', title: '薪水', width: 100}
+                    ,{field: 'commision', title: '佣金', width: 100}
+                    ,{field: 'deptno', title: '部门编号', width: 100}
+                    ,{fixed: 'right', width: 180, align:'center', toolbar: '#barDemo'}
+                ]]
+                ,empno:'reload'
+            });
+
+            //头工具栏事件
+            table.on('toolbar(test)', function(obj){
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch(obj.event){
+                    case 'add':
+                        method="inserts";
+                        $("#addOrUpForm")[0].reset();
+                        $("input[name='empno']").prop("readonly",false);
+                        layer.open({
+                            type:1,
+                            title:'新增用户',
+                            area: '400px',
+                            content: $('#addDiv')
+                        });
+                        break;
+                    case 'update':
+
+                        break;
+                    case 'delete':
+                        layer.msg(checkStatus.isAll ? '全选': '未全选');
+                        break;
+
+                    //自定义头工具栏右侧图标 - 提示
+                    case 'LAYTABLE_TIPS':
+                        layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                        break;
+                };
+            });
+
+            //监听行工具事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                //console.log(obj)
+                if(obj.event === 'del'){
+                    layer.confirm('真的删除行么', function(index){
+                        obj.del();
+                     $.ajax({
+                            type: "POST",
+                            url: "deleteByid",
+                            data: "empno="+data.empno,
+                            success: function(msg){
+                                table.reload('reload');
+                            }
+                        });
+                        layer.close(index);
+                    });
+                } else if(obj.event === 'edit'){
+                    method="update";
+                    //给表单赋值
+                    form.val("formTest",{
+                        "empno": data.empno
+                        ,"empname": data.empname
+                        ,"job": data.job
+                        ,"manager": data.manager
+                        ,"hiredate": data.hiredate
+                        ,"salary": data.salary
+                        ,"commision": data.commision
+                        ,"deptno": data.deptno
+                    });
+
+                    //将id设置成只读的
+                    //$("input[name='empno']").prop("readonly",true);
+                    $("input[name='empno']").prop("readonly",true);
+                    //修改信息
+                    layer.open({
+                        type:1,
+                        title:'修改用户',
+                        area: '400px',
+                        content: $('#addDiv')
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

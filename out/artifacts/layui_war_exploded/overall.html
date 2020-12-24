@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>员工管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" type="image/x-icon" href="1580709747331.jpeg"/>
+    <link rel="stylesheet" href="layui/css/layui.css"/>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="layui/layui.js"></script>
+</head>
+<body class="layui-table-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo"><a class="layui-logo" href="">员工管理系统</a></div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="myFile/${user.headimg}" class="layui-nav-img">
+                    ${users.username}
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="login.jsp">退了</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="margin-right: 10px;">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">默认展开</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">选项一</a></dd>
+                        <dd><a href="javascript:;">选项二</a></dd>
+                        <dd><a href="javascript:;">选项三</a></dd>
+                        <dd><a href="">跳转项</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">解决方案</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">移动模块</a></dd>
+                        <dd><a href="">后台模版</a></dd>
+                        <dd><a href="">电商平台</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">云市场</a></li>
+                <li class="layui-nav-item"><a href="">社区</a></li>
+            </ul>
+            <ul class="layui-nav layui-nav-tree layui-bg-cyan layui-inline" lay-filter="demo">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">默认展开</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">选项一</a></dd>
+                        <dd><a href="javascript:;">选项二</a></dd>
+                        <dd><a href="javascript:;">选项三</a></dd>
+                        <dd><a href="">跳转项</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">解决方案</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">移动模块</a></dd>
+                        <dd><a href="">后台模版</a></dd>
+                        <dd><a href="">电商平台</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">云市场</a></li>
+                <li class="layui-nav-item"><a href="">社区</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <div class="layui-tab layui-tab-brief" lay-filter="tab_emp"  lay-allowClose="true">
+            <div class="layui-tab" lay-filter="demo" lay-allowclose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this" lay-id="11">网站设置</li>
+                    <li lay-id="22">用户管理</li>
+                    <li lay-id="33">权限分配</li>
+                    <li lay-id="44">商品管理</li>
+                    <li lay-id="55">订单管理</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">内容1</div>
+                    <div class="layui-tab-item">内容2</div>
+                    <div class="layui-tab-item">内容3</div>
+                    <div class="layui-tab-item">内容4</div>
+                    <div class="layui-tab-item">内容5</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+    });
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+        //监听导航点击
+        element.on('nav(demo)', function(elem){
+            //console.log(elem)
+            alert(1);
+            element.tabAdd('demo', {
+                title: "员工列表" //用于演示
+                ,content: '<iframe src="table.html" width="100%" height="700px" frameborder=0 ></iframe>'
+                ,id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+            });
+        });
+    });
+        $('.site-emp-active').on('click', function(){
+            var othis = $(this);
+            //获取hash来切换选项卡，假设当前地址的hash为lay-id对应的值
+            var layid = othis.attr("lay-id");
+            var exist=$("li[lay-id='"+layid+"']").length;
+            //判断是否存在tab
+            if (exist==0){
+                element.tabAdd('tab_emp', {
+                    title: othis.children("a").text() //用于演示
+                    ,content: '<iframe src="'+othis.attr("url")+'" width="100%" height="700px" frameborder=0 ></iframe>'
+                    ,id: layid //实际使用一般是规定好的id，这里以时间戳模拟下
+                });
+                element.tabChange('tab_emp', layid);
+            }else {
+                //切换到指定Tab项
+                element.tabChange('tab_emp', layid); //切换到：用户管理
+            }
+        });
+
+</script>
+</body>
+</html>

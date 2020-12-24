@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <script src="layui/layui.js"></script>
+</head>
+<body>
+<center><h2>注册</h2>
+    <br>
+    <div class="layui-upload" style="width: 315px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="uname" id="uname" lay-verify="uname" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="upass" id="upass" lay-verify="upass" autocomplete="off" placeholder="请输入密码" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-upload-list">
+            <img style="height: 80px;width: 80px;" class="layui-upload-img" id="demo1" >
+            <p id="demoText"></p>
+        </div>
+        <button type="button" class="layui-btn" id="headimg" >上传图片</button>
+    </div>
+</center>
+</body>
+<script>
+    layui.use(['upload','element','jquery'], function() {
+        var $ = layui.jquery
+            , upload = layui.upload,
+            element = layui.element;
+        //普通图片上传
+        var pid = $(" input[ name='pid1' ] ").val()
+        var uploadInst = upload.render({
+            elem: '#headimg'
+            , url: 'user/register'
+            , data: {uname: $("#uname").val(), upass: $("#upass").val()}
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                this.data = {"uname": $("#uname").val(), "upass": $("#upass").val()}//携带参数
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64） 用来显示返回的文件
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                } else {
+                    return layer.msg('上传成功');
+                    window.location.href="login.html";
+                }
+                //上传成功
+            }
+            , error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>
+</html>

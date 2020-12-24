@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yidu.dao.EmpDao">
+
+    <resultMap id="BaseResultMap" type="com.yidu.entity.Emp">
+        <!--@Table emp-->
+        <result property="empno" column="empNo" jdbcType="INTEGER"/>
+        <result property="empname" column="empName" jdbcType="VARCHAR"/>
+        <result property="job" column="job" jdbcType="VARCHAR"/>
+        <result property="manager" column="manager" jdbcType="INTEGER"/>
+        <result property="hiredate" column="hiredate" jdbcType="VARCHAR"/>
+        <result property="salary" column="salary" jdbcType="NUMERIC"/>
+        <result property="commision" column="commision" jdbcType="NUMERIC"/>
+        <result property="deptno" column="deptno" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          empNo, empName, job, manager, hiredate, salary, commision, deptno
+        from t281.emp
+        where empNo = #{empno}
+    </select>
+    <!--统计-->
+    <select id="count" resultType="Integer">
+        select
+        count(*)
+        from t281.emp
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          empNo, empName, job, manager, hiredate, salary, commision, deptno
+        from t281.emp
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          empNo, empName, job, manager, hiredate, salary, commision, deptno
+        from t281.emp
+        <where>
+            <if test="empno != null">
+                and empNo = #{empno}
+            </if>
+            <if test="empname != null and empname != ''">
+                and empName = #{empname}
+            </if>
+            <if test="job != null and job != ''">
+                and job = #{job}
+            </if>
+            <if test="manager != null">
+                and manager = #{manager}
+            </if>
+            <if test="hiredate != null and hiredate != ''">
+                and hiredate = #{hiredate}
+            </if>
+            <if test="salary != null">
+                and salary = #{salary}
+            </if>
+            <if test="commision != null">
+                and commision = #{commision}
+            </if>
+            <if test="deptno != null">
+                and deptno = #{deptno}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="empno" useGeneratedKeys="true">
+        insert into t281.emp(empNo,empName, job, manager, hiredate, salary, commision, deptno)
+        values (#{empno},#{empname}, #{job}, #{manager}, #{hiredate}, #{salary}, #{commision}, #{deptno})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update t281.emp
+        <set>
+            <if test="empname != null and empname != ''">
+                empName = #{empname},
+            </if>
+            <if test="job != null and job != ''">
+                job = #{job},
+            </if>
+            <if test="manager != null">
+                manager = #{manager},
+            </if>
+            <if test="hiredate != null and hiredate != ''">
+                hiredate = #{hiredate},
+            </if>
+            <if test="salary != null">
+                salary = #{salary},
+            </if>
+            <if test="commision != null">
+                commision = #{commision},
+            </if>
+            <if test="deptno != null">
+                deptno = #{deptno},
+            </if>
+        </set>
+        where empNo = #{empno}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from t281.emp where empNo = #{empno}
+    </delete>
+
+</mapper>
